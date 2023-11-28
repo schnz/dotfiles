@@ -1,0 +1,18 @@
+// These settings override both User and Default settings for the Markdown syntax
+{
+    // Which file extensions go with this file type?
+    "extensions":
+    [
+        "md",
+        "mdown",
+        "mdwn",
+        "mmd",
+        "txt"
+    ],
+    "word_wrap": false,
+    "wrap_width": 80,
+    "tab_size": 4,
+    // Set to true to removing trailing white space on save
+    "trim_trailing_white_space_on_save": false
+}
+

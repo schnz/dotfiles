@@ -1,0 +1,15 @@
+[global]
+username = "{{ .credentials.spotify.username }}"
+use-keyring = true
+backend = "pulseaudio"                                   # run `spotifyd --backends` for possible values
+# device = alsa_audio_device                             # run `aplay -L` for possible values
+# control = alsa_audio_device                            # device for the mixer, if not the same as 'device'
+# mixer = PCM
+# volume-control = alsa                                    # or alsa_linear, or softvol
+# onevent = command_to_run_on_playback_events
+device_name = "{{ .chezmoi.hostname }}"                  # must not contain spaces
+bitrate = 320                                            # 96, 160 or 320
+max_cache_size = 1000000000                              # 1GB
+cache_path = "{{ .chezmoi.homeDir }}/.cache/spotifyd"
+volume-normalisation = true
+normalisation-pregain = -10

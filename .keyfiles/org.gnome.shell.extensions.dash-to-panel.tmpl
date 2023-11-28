@@ -1,0 +1,24 @@
+{{ if has "gnome-shell-extension-dash-to-panel" .packages -}}
+[org/gnome/shell/extensions/dash-to-panel]
+appicon-margin=6
+appicon-padding=5
+dot-color-1='#f9f06b'
+dot-color-2='#f9f06b'
+dot-color-3='#f9f06b'
+dot-color-4='#f9f06b'
+dot-color-override=true
+dot-color-unfocused-different=true
+dot-style-focused='METRO'
+dot-style-unfocused='CILIORA'
+hot-keys=true
+panel-element-positions='{"0":[{"element":"showAppsButton","visible":true,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}'
+panel-size=32
+panel-sizes='{"0":32}'
+shortcut=['<Super>q']
+shortcut-text='<Super>q'
+show-showdesktop-delay=300
+show-showdesktop-hover=true
+show-window-previews=false
+showdesktop-button-width=1
+trans-use-custom-opacity=true
+{{- end }}

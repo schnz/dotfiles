@@ -1,0 +1,20 @@
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+home=['<Super>e']
+
+{{ if or (has "alacritty" .packages) (has "gnome-console" .packages) -}}
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Super>t'
+{{ if has "alacritty" .packages -}}
+command='alacritty'
+{{- else -}}
+command='kgx'
+{{- end }}
+name='Terminal'
+{{- end }}
+
+[org/gnome/settings-daemon/plugins/power]
+ambient-enabled=false
+idle-dim=false
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-type='nothing'

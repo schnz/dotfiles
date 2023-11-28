@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# With background
+# FORMAT_STRING="$(tput setaf 4)%-25s $(tput setaf 5)$(tput setab 7)%s$(tput sgr0)\n"
+FORMAT_STRING="$(tput setaf 4)%-25s$(tput setaf 5)$(tput bold) %s$(tput sgr0)\n"
+
+tail -f "$1" | stdbuf -o0 cut -f 2,3 --output-delimiter="" | stdbuf -o0 tr '\n' '\0' | xargs -0 -n 2 printf "$FORMAT_STRING"

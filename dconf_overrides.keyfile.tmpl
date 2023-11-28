@@ -1,0 +1,16 @@
+{{/* chezmoi execute-template < $(chezmoi source-path)/dconf_overrides.keyfile.tmpl */}}
+{{ includeTemplate ".keyfiles/org.freedesktop.tracker.miner" . }}
+{{ includeTemplate ".keyfiles/org.gnome.desktop.tmpl" . }}
+{{ includeTemplate ".keyfiles/org.gnome.gedit.tmpl" . }}
+{{ includeTemplate ".keyfiles/org.gnome.nautilus" . }}
+{{ includeTemplate ".keyfiles/org.gnome.settings-daemon.tmpl" . }}
+{{ includeTemplate ".keyfiles/org.gnome.shell.tmpl" . }}
+{{ includeTemplate ".keyfiles/org.gnome.shell.extensions.dash-to-panel.tmpl" . }}
+{{ includeTemplate ".keyfiles/org.gnome.shell.extensions.miniview.tmpl" . }}
+
+{{/* should be kept in sync with [org/gnome/shell/weather] */}}
+[org/gnome/Weather]
+locations=[<(uint32 2, <('Seeheim, Hesse, Germany', '', false, [(0.86864933024667279, 0.1508478700080616)], @a(dd) [])>)>]
+
+[system/locale]
+region='de_DE.UTF-8'

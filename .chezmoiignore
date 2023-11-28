@@ -1,0 +1,86 @@
+.keyfiles/
+dynamic/
+dconf_overrides.keyfile
+README.md
+
+# Keep bash-related skeleton files in non-zsh environments.
+# Likewise, don't create .zshenv
+{{ if not (has "zsh" .packages) -}}
+.bash_logout
+.bash_profile
+.bashrc
+.zshenv
+{{- end }}
+
+# If grml zsh config is not used
+# do not remove user-specified .zshrc and dot not generate .zshrc.* files
+{{ if not (has "grml-zsh-config" .packages) -}}
+.zshrc
+.zshrc.local
+.zshrc.pre
+{{- end }}
+
+{{ if not .use_nvm -}}
+.config/npm/
+.local/share/nvm/
+{{- end }}
+
+{{ if not (has "alacritty" .packages) -}}
+.config/alacritty/
+.local/share/applications/Alacritty.desktop
+{{- end }}
+
+{{ if not (has "chromium" .packages) -}}
+.local/share/applications/chromium.desktop
+{{- end }}
+
+{{ if not (has "google-earth-pro" .packages) -}}
+.config/Google/
+{{- end }}
+
+{{ if not (has "htop" .packages) -}}
+.config/htop/htoprc
+{{- end }}
+
+# The CSS overrides target the default Adwaita theme
+{{ if not (has "libadwaita" .packages) -}}
+.config/gtk-3.0/gtk.css
+.config/gtk-4.0/gtk.css
+{{- end }}
+
+{{ if not (has "neovim" .packages) -}}
+.config/nivm/
+{{- end }}
+
+{{ if not (has "paru" .packages) -}}
+.config/paru/
+{{- end }}
+
+{{ if not (has "spotifyd" .packages) -}}
+.config/spotifyd/
+{{- end }}
+
+{{ if not (has "streamlink" .packages) -}}
+.config/streamlink/
+{{- end }}
+
+{{ if not (has "sublime-text" .packages) -}}
+.config/sublime-text/
+{{- end }}
+
+{{ if not (has "tmux" .packages) -}}
+.config/tmux/
+{{- end }}
+
+{{ if not (has "visual-studio-code-bin" .packages) -}}
+.config/Code/
+.local/bin/chezmoi-helper-code
+{{- end }}
+
+{{ if not (has "weechat" .packages) -}}
+.config/weechat/
+.local/bin/weechat-follow-terminal
+{{ if not (has "xosd" .packages) -}}
+.local/bin/weechat-follow-osd
+{{- end }}
+{{- end }}

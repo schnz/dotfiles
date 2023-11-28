@@ -1,0 +1,99 @@
+{
+  /**
+   * (Mostly) static UI settings
+   */
+  "breadcrumbs.enabled": true,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.fontFamily": "'Source Code Pro', 'Droid Sans Mono', monospace",
+  "editor.fontSize": 16,
+  "editor.glyphMargin": true,
+  "editor.guides.indentation": true,
+  "editor.hideCursorInOverviewRuler": false,
+  "editor.lineHeight": 26,
+  "editor.lineNumbers": "on",
+  "editor.minimap.enabled": false,
+  "editor.overviewRulerBorder": false,
+  "editor.renderLineHighlight": "line",
+  "editor.renderWhitespace": "none",
+  "editor.rulers": [
+    {
+      "column": 80,
+      "color": "#262626"
+    },
+    {
+      "column": 120,
+      "color": "#2b2b2b"
+    }
+  ],
+  "editor.scrollbar.vertical": "auto",
+  "editor.showFoldingControls": "mouseover",
+  "explorer.decorations.colors": false,
+  "window.menuBarVisibility": "toggle",
+  "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}",
+  "workbench.activityBar.location": "side",
+  "workbench.layoutControl.enabled": true,
+  "workbench.statusBar.visible": true,
+  /**
+   * Autoformatting & related settings
+   */
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.preferences.quoteStyle": "double",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  /**
+   * Other user settings
+   */
+  "explorer.confirmDelete": false,
+  "files.enableTrash": false,
+  "files.autoSave": "off",
+  "window.titleBarStyle": "custom",
+  "workbench.editor.enablePreview": false,
+  "workbench.startupEditor": "none",
+  "zenMode.fullScreen": false,
+  "zenMode.centerLayout": true,
+  "zenMode.showTabs": "single",
+  /**
+   * Extension related
+   */
+  "aws.telemetry": false,
+  "aws.suppressPrompts": {
+    "codeWhispererNewWelcomeMessage": true
+  },
+  "aws.codeWhisperer.shareCodeWhispererContentWithAWS": false,
+  "go-template.patterns": ["**/*.tmpl"],
+  "headwind.runOnSave": false,
+  "tailwindCSS.experimental.classRegex": [
+    // "'([^']*)'",
+    // "`([^`]*)`",
+    "'([^']*)':",
+    "(\\S+):"
+  ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list"]
+}

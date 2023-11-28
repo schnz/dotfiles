@@ -1,0 +1,40 @@
+#
+# ~/.zshenv
+#
+
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [ -z "$GCC_COLORS" ] ; then
+    export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+fi
+
+{{ if has "neovim" .packages -}}
+if [ -z "$EDITOR" ] && [ -f "/usr/bin/nvim" ] ; then
+    export EDITOR=nvim
+fi
+{{ else if not (has "grml-zsh-config" .packages) }}
+if [ -z "$EDITOR" ] && [ -f "/usr/bin/vim" ] ; then
+    export EDITOR=vim
+fi
+{{- end }}
+
+if [ -z "$DOTNET_CLI_TELEMETRY_OPTOUT" ] ; then
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1
+fi
+
+# Unfortunately many applications don't respect XDG conventions
+# Some files will inevitably still be stored in $HOME (e.g. ~/.aws/sso)
+export AWS_CONFIG_FILE=~/.config/aws/config
+export AWS_SHARED_CREDENTIALS_FILE=~/.config/aws/credentials
+export AZURE_CONFIG_DIR=~/.config/azure
+{{- /* The cargo dir acts both as download/source cache and as target directory for binary builds. */}}
+{{- /* Pointing CARGO_HOME to ~/.cache isn't entirely correct when expecting builds to be persistent. */}}
+{{- /* As long as cargo is only ever used as a make dependency to build packages this still seems like the best place */}}
+export CARGO_HOME=~/.cache/cargo
+export CHROME_USER_DATA_DIR=~/.local/share/chromium
+export KUBECONFIG=~/.config/kube/config
+export OCI_CLI_CONFIG_FILE=~/.config/oci/config
+export OCI_CLI_KEY_FILE=~/.config/oci/oci_api_key.pem
+export NPM_CONFIG_USERCONFIG=~/.config/npm/config

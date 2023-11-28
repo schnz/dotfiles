@@ -1,0 +1,88 @@
+#
+# ~/.zshrc.local
+#
+
+# disable XON/XOFF flow control so ctrl-s will not freeze the terminal.
+stty -ixon
+
+# Skip confirmation when executing `rm *`
+setopt rmstarsilent
+
+# History size (default mem size is 5000, file size is 10000)
+HISTSIZE=30000
+SAVEHIST=$HISTSIZE
+
+# Load zsh plugins
+{{ if has "zsh-syntax-highlighting" .packages -}}
+if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    . /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+{{- end }}
+
+{{ if has "zsh-autosuggestions" .packages -}}
+if [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    . /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+{{- end }}
+
+# Directory where to place user-generated autocompletions
+if [ -d ~/.local/share/zsh/site-functions ]; then
+    fpath=(~/.local/share/zsh/site-functions $fpath)
+fi
+
+{{ if .use_nvm -}}
+# Load Node Version Manager
+# bash_completion script has zsh detection and enables bashcompinit
+if [ -d "$HOME/.local/share/nvm" ]; then
+    export NVM_DIR="$HOME/.local/share/nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+fi
+{{- end }}
+
+# Exports exclusively for interactive shells (hence no need to reside in .zshenv)
+export GPG_TTY=$(tty)
+
+{{ if has "grml-zsh-config" .packages -}}
+# Prompt style
+# https://zsh.sourceforge.io/Doc/Release/Prompt-Expansion.html#Visual-effects
+grml_theme_add_token dollar '$ '
+zstyle ':prompt:grml:*:items:path' token '%40<..<%~%<<'
+zstyle ':prompt:grml:*:items:user' pre '%f['
+zstyle ':prompt:grml:*:items:path' post '%b]'
+zstyle ':prompt:grml:left:setup' items rc change-root user at host path shell-level vcs dollar
+{{- end }}
+
+# Aliases
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+{{ if has "kubectl" .packages -}}
+alias k='kubectl'
+alias kdcm='kubectl describe configmap'
+alias kdcj='kubectl describe cronjob'
+alias kdd='kubectl describe deploy'
+alias kdj='kubectl describe job'
+alias kdn='kubectl describe node'
+alias kgns='kubectl describe ns'
+alias kdp='kubectl describe pod'
+alias kgrs='kubectl describe rs'
+alias kds='kubectl describe secret'
+alias kdsvc='kubectl describe service'
+alias ke='kubectl exec -it'
+alias krmp='kubectl delete pod'
+alias kgcm='kubectl get configmap'
+alias kgcj='kubectl get cronjob'
+alias kgd='kubectl get deploy'
+alias kgj='kubectl get job'
+alias kgn='kubectl get node'
+alias kgns='kubectl get ns'
+alias kgp='kubectl get pod'
+alias kgrs='kubectl get rs'
+alias kgs='kubectl get secret'
+alias kgsvc='kubectl get service'
+alias kl='kubectl logs'
+alias kgr='kubectl describe nodes | grep -A 9 -e "^Allocated resources"'
+alias kgnp='kubectl describe nodes | grep -e "^Non-terminated Pods"'
+{{ end -}}
+{{ if and (has "neovim" .packages) (not (has "vim" .packages)) -}}
+alias vim='nvim'
+{{- end }}

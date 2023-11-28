@@ -1,0 +1,23 @@
+[user]
+	name = {{ .name }}
+	email = {{ .email }}
+[core]
+	{{ if has "neovim" .packages -}}
+	editor = nvim
+	{{- else if has "vim" .packages -}}
+	editor = vim
+	{{- else -}}
+	editor = vi
+	{{ end }}
+[init]
+	defaultBranch = master
+[push]
+	default = simple
+[pull]
+	rebase = false
+	ff = only
+#[commit]
+#	gpgsign = true
+[diff "sqlite3"]
+	binary = true
+	textconv = "echo .dump | sqlite3"

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -euo pipefail
+
+BASENAME=$(basename "$0")
+DEFAULT_THRESHOLD=500
+LIMIT=30
+
+if [ $# -lt 2 ]; then
+	echo "usage: $BASENAME <command> <path> [<min fragments>]"
+	echo
+	echo "SYNOPSIS"
+	echo "  $BASENAME find <path> [<threshold>]"
+	echo "  $BASENAME defrag <path> [<threshold>]"
+	echo
+	echo "command must be one of"
+	echo "  find     Finds files whose fragment count is above the threshold"
+	echo "  defrag   Defrag files whose fragment count is above the threshold"
+	echo
+	echo "path is a path to a directory where fragmented files are searched."
+	echo "The search das not descend to directories on other filesystems."
+	echo
+	echo "The optional number of mimimum fragments specifies the lower bound threshold."
+	echo "When omitted, a fragment count of ${DEFAULT_THRESHOLD} is set as threshold."
+	echo
+
+	exit 0
+fi
+
+search() {
+	local path="$1"
+	local threshold="$2"
+
+	if ! [ -d "$path" ] || [ -L "$path" ]; then
+		echo "Path is not a directory: $path"
+		exit 1;
+	fi
+
+	find "$path" -xdev -type f -print0 | xargs -0 filefrag | sed 's/^\(.*\): \([0-9]\+\) extent.*/\2 \1/' | awk -F ' ' "\$1 > $threshold" | sort -n -r | head -n "$LIMIT"
+}
+
+defrag() {
+	local path="$1"
+	local threshold="$2"
+
+	if ! [ -d "$path" ] || [ -L "$path" ]; then
+		echo "Path is not a directory: $path"
+		exit 1
+	fi
+
+	find "$path" -xdev -type f -print0 | xargs -0 filefrag | sed 's/^\(.*\): \([0-9]\+\) extent.*/\2 \1/' | awk -F ' ' "\$1 > $threshold" | sort -n -r | head -n "$LIMIT" | cut -d " " -f 2 | xargs -r btrfs filesystem defragment -f -v
+}
+
+case "$1" in
+	find)
+		search "$2" "${3:-$DEFAULT_THRESHOLD}"
+		;;
+	defrag)
+		defrag "$2" "${3:-$DEFAULT_THRESHOLD}"
+		;;
+	*)
+		echo "unknown command \"$1\""
+		exit 1
+		;;
+esac

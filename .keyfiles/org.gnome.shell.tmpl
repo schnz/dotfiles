@@ -1,0 +1,45 @@
+[org/gnome/shell]
+enabled-extensions=[
+{{- $ext := list -}}
+
+{{- if has "gnome-shell-extension-dash-to-panel" .packages -}}
+{{ $ext = append $ext "'dash-to-panel@jderose9.github.com'" }}
+{{- end -}}
+
+{{- if has "gnome-shell-extension-gtile" .packages -}}
+{{ $ext = append $ext "'gTile@vibou'" }}
+{{- end -}}
+
+{{- if has "gnome-shell-extension-miniview-git" .packages -}}
+{{ $ext = append $ext "'miniview@thesecretaryofwar.com'" }}
+{{- end -}}
+
+{{- $ext | join ", " -}}
+]
+favorite-apps=[
+{{- $favs := list -}}
+
+{{- if has "firefox" .packages -}}
+{{ $favs = append $favs "'firefox.desktop'" }}
+{{- end -}}
+
+{{- if has "thunderbird" .packages -}}
+{{ $favs = append $favs "'thunderbird.desktop'" }}
+{{- else -}}
+{{ $favs = append $favs "'org.gnome.Nautilus.desktop'" }}
+{{- end -}}
+
+{{- if has "alacritty" .packages -}}
+{{ $favs = append $favs "'Alacritty.desktop'" }}
+{{- else if has "gnome-console" .packages -}}
+{{ $favs = append $favs "'org.gnome.Console.desktop'" }}
+{{- end -}}
+
+{{- $favs | join ", " -}}
+]
+
+[org/gnome/shell/weather]
+locations=[<(uint32 2, <('Seeheim, Hesse, Germany', '', false, [(0.86864933024667279, 0.1508478700080616)], @a(dd) [])>)>]
+
+[org/gnome/shell/world-clocks]
+locations=[<(uint32 2, <('Berlin', 'EDDT', true, [(0.91746141594945008, 0.23241968454167572)], [(0.91658875132345297, 0.23387411976724018)])>)>]

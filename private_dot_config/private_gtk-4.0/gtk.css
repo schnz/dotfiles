@@ -1,0 +1,5 @@
+headerbar.titlebar,
+headerbar.titlebar > windowhandle > box > box.start > windowcontrols.start > button,
+headerbar.titlebar > windowhandle > box > box.end > windowcontrols.end > button {
+    min-height: 16px;
+}

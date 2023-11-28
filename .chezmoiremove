@@ -1,0 +1,21 @@
+# Usually copied from /etc but superflous in a zsh environment
+# If zsh is not available, those files are kept from being removed in .chezmoiignore
+.bash_logout
+.bash_profile
+.bashrc
+
+# Should not be used when grml zsh config is used.
+# If grml zsh config is unavailable, .zshrc is kept from being removed in .chezmoiignore
+.zshrc
+
+# The modify_GoogleEarthPro.conf script changes the default locations that
+# Google Earth uses to store its data. But this happens only after the config
+# file was initialy created during the first startup of Google Earth. By this
+# time, Google has already created these default directories/files.
+#
+# Unfortunately, Google Earth uses the configurable CachePath only for very few
+# pieces of data. Map data and other large chunks are continued to be cached in
+# ~/.googleearth/Cache for the time being, which is why it is ignored below.
+#
+#.googleearth/Cache
+.googleearth/*.kml

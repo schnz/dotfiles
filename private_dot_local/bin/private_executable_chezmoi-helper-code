@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -euo pipefail
+
+BASENAME=$(basename "$0")
+EXTENSIONS=(
+	"EditorConfig.EditorConfig" # EditorConfig for VS Code
+	"dbaeumer.vscode-eslint"    # ESLint
+	"golang.go"                 # Go
+	"esbenp.prettier-vscode"    # Prettier - Code formatter
+	"bradlc.vscode-tailwindcss" # Tailwind CSS IntelliSense
+	"rebornix.toggle"           # Toggle
+)
+
+if [ $# -lt 1 ]; then
+	echo "usage $BASENAME <command>"
+	echo
+	echo "SYNOPSIS"
+	echo "  $BASENAME list-missing-extensions"
+	echo "  $BASENAME install-missing-extensions"
+
+	exit 0
+fi
+
+list_missing_extensions() {
+	local installed
+	mapfile -t installed < <(code --list-extensions)
+
+	for ext in "${EXTENSIONS[@]}"; do
+		local find="\<${ext}\>"
+		if ! [[ ${installed[*]} =~ $find ]]; then
+			echo "$ext"
+		fi
+	done
+}
+
+install_missing_extensions() {
+	local IFS=$'\n'
+	local missing
+	mapfile -t missing < <(list_missing_extensions)
+
+	for ext in "${missing[@]}"; do
+		code --install-extension "$ext"
+	done
+}
+
+case "$1" in
+	list-missing-extensions)
+		list_missing_extensions
+		;;
+	install-missing-extensions)
+		install_missing_extensions
+		;;
+	*)
+		echo "unknown command \"$1\""
+		exit 1
+		;;
+esac

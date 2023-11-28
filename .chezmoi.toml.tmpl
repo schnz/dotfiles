@@ -1,0 +1,90 @@
+[diff]
+pager = "less -R"
+
+[data.alacritty]
+# Can be one of ayu-dark, ayu-mirage, snazzy, pencil-dark, pencil-light, monokai-soda, monokai-pro, kitty, hyper, dracula, darkside or cobalt2
+colorscheme = "{{ dig "alacritty" "colorscheme" "monokai-soda" . }}"
+
+[data]
+name = "{{ dig "data" "name" "Markus Schanz" . }}"
+email = "{{ promptStringOnce . "email" "Provide an email for the global git config user.email setting" }}"
+use_nvm = {{ promptBoolOnce . "use_nvm" "Setup Node Version Manager (nvm)?" true }}
+
+# Execute this command to print a re-generated config with an up-to-date package list.
+# cat "$(chezmoi source-path)/.chezmoi.toml.tmpl" | chezmoi execute-template --init
+packages = [
+  # Used for GNOME theming
+  {{ if kindIs "map" (stat "/usr/lib/libadwaita-1.so") -}}"libadwaita",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/fonts/noto/NotoSans-Regular.ttf") -}}"noto-fonts",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/icons/Papirus") -}}"papirus-icon-theme",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/fonts/liberation/LiberationMono-Regular.ttf") -}}"ttf-liberation",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/fonts/TTF/LiterationMonoNerdFont-Regular.ttf") -}}"ttf-liberation-mono-nerd",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/icons/Vanilla-DMZ") -}}"xcursor-vanilla-dmz",{{ end }}
+
+  # GNOME shell extensions that will automatically be activated and configured when present
+  {{ if kindIs "map" (stat "/usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com") -}}"gnome-shell-extension-dash-to-panel",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/gnome-shell/extensions/gTile@vibou") -}}"gnome-shell-extension-gtile",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/gnome-shell/extensions/miniview@thesecretaryofwar.com") -}}"gnome-shell-extension-miniview-git",{{ end }}
+
+  # Terminal related
+  {{ if kindIs "map" (stat "/usr/bin/alacritty") -}}"alacritty",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/kgx") -}}"gnome-console",
+  {{ end }}{{ if kindIs "map" (stat "/etc/skel/.zshrc") -}}"grml-zsh-config",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/zsh") -}}"zsh",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/zsh/plugins/zsh-autosuggestions") -}}"zsh-autosuggestions",
+  {{ end }}{{ if kindIs "map" (stat "/usr/share/zsh/plugins/zsh-syntax-highlighting") -}}"zsh-syntax-highlighting",{{ end }}
+
+  # CLI tools
+  {{ if kindIs "map" (stat "/usr/bin/htop") -}}"htop",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/kubectl") -}}"kubectl",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/paru") -}}"paru",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/tmux") -}}"tmux",{{ end }}
+
+  # Editors
+  {{ if kindIs "map" (stat "/usr/bin/gedit") -}}"gedit",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/nvim") -}}"neovim",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/subl") -}}"sublime-text",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/vim") -}}"vim",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/code") -}}"visual-studio-code-bin",{{ end }}
+
+  # Multimedia
+  {{ if kindIs "map" (stat "/usr/bin/mpv") -}}"mpv",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/spotifyd") -}}"spotifyd",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/streamlink") -}}"streamlink",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/weechat") -}}"weechat",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/osd_cat") -}}"xosd",{{ end }}
+
+  # Misc
+  {{ if kindIs "map" (stat "/usr/bin/chromium") -}}"chromium",
+  {{ end }}{{ if kindIs "map" (stat "/opt/google/earth/pro/googleearth") -}}"google-earth-pro",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/firefox") -}}"firefox",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/sensors") -}}"lm_sensors",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/thunderbird") -}}"thunderbird",{{ end }}
+]
+
+# Secret Management
+#
+# Secrets are expected to be stored in the keyring which allows them to be
+# accessed by Linux's DBus Secret Service API. In user-space, the secret-tool
+# command can be used to store secrets. It is a direct dependency of gnome-shell
+# and should be available in most environments. Note that chezmoi also provides
+# a `chezmoi secret keyring` command but it does not allow to specify a label or
+# attributes other than "username" and "service".
+#
+# To add or update a password, use the command indicated by the comments below.
+{{/**/}}
+{{- if kindIs "map" (stat "/usr/bin/weechat") }}
+# secret-tool store --label="Twitch (IRC)" application chezmoi service twitch username "{{ dig "credentials" "twitch" "username" "Coksnuss" . }}"
+[data.credentials.twitch]
+username = "{{ dig "credentials" "twitch" "username" "Coksnuss" . }}"
+
+# secret-tool store --label="Libera (IRC)" application chezmoi service libera username "{{ dig "credentials" "libera" "username" "Superhansel" . }}"
+[data.credentials.libera]
+username = "{{ dig "credentials" "libera" "username" "Superhansel" . }}"
+{{ end -}}
+
+{{- if kindIs "map" (stat "/usr/bin/spotifyd") }}
+# secret-tool store --label="Spotifyd" application rust-keyring service spotifyd username "{{ dig "credentials" "spotify" "username" "Coksnuss" . }}"
+[data.credentials.spotify]
+username = "{{ dig "credentials" "spotify" "username" "Coksnuss" . }}"
+{{ end -}}

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+BASENAME=$(basename $0)
+ACTION=${BASENAME%.*}
+
+[[ "$ACTION" != "mount" && "$ACTION" != "umount" ]] && exit 2
+[[ ! -L "$0" ]] && exit 3
+
+SHARE=${BASENAME#${ACTION}.}
+SHAREUID=$(id -u)
+SHAREGID=$(id -g)
+
+if [[ "$ACTION" == "umount" ]]; then
+    sudo umount "/mnt/${SHARE}"
+    exit
+fi
+
+if [[ "$ACTION" == "mount" ]]; then
+    sudo mount -t cifs "//ds223/${SHARE}" "/mnt/${SHARE}" -o vers=3.1.1,uid=${SHAREUID},gid=${SHAREGID},file_mode=0644,dir_mode=0755,credentials=$HOME/.config/cifspasswd.synology,iocharset=utf8,X-mount.mkdir=0750
+fi

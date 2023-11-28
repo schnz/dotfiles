@@ -1,0 +1,4 @@
+[".local/share/nvm"]
+type = "archive"
+url = "https://github.com/nvm-sh/nvm/archive/refs/tags/v0.39.5.tar.gz"
+stripComponents = 1

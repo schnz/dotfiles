@@ -1,0 +1,3 @@
+#!/bin/sh
+
+tail -f $1 | sed -Eun 's/^([^\t]+)\t([^\t]+)\t([^\t]+)/[\2]: \3/p' | osd_cat --pos=bottom --align left --offset 65 --lines 8 --delay 30 --indent=350 --colour orange --outline=2 --outlinecolour=black -f "-*-terminal-medium-*-*-*-*-*-*-*-*-*-*-*"

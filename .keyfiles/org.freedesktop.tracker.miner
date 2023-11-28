@@ -1,0 +1,3 @@
+[org/freedesktop/tracker/miner/files]
+index-recursive-directories=['&DOCUMENTS']
+index-single-directories=['&DOWNLOAD']
