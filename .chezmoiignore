@@ -74,6 +74,7 @@ README.md
 
 {{ if not (has "visual-studio-code-bin" .packages) -}}
 .config/Code/
+.config/code-flags.conf
 .local/bin/chezmoi-helper-code
 {{- end }}
 
