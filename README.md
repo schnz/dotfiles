@@ -11,7 +11,7 @@ The TLDR of everything below.
 # recommended system configuration and packages
 chezmoi init https://github.com/schnz/dotfiles.git
 chezmoi apply
-# chezmoi-helper-* scripts require a new shell session with an updated the $PATH
+# chezmoi-helper-* scripts require a new shell session with an updated $PATH
 chezmoi-helper-dconf apply
 chezmoi-helper-code install-extensions
 ```

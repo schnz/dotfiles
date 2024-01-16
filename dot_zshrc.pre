@@ -1,3 +1,5 @@
 typeset -ga ls_options
 
 ls_options+=( --group-directories-first )
+
+[[ -d $HOME/.local/share/zsh/site-functions ]] && fpath+=( "$HOME/.local/share/zsh/site-functions" )
