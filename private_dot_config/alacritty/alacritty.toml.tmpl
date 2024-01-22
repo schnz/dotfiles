@@ -1,0 +1,49 @@
+[colors.bright]
+black = "#625e4c"
+blue = "#9d65ff"
+cyan = "#58d1eb"
+green = "#98e024"
+magenta = "#f4005f"
+red = "#f4005f"
+white = "#f6f6ef"
+yellow = "#e0d561"
+
+[colors.normal]
+black = "#1a1a1a"
+blue = "#9d65ff"
+cyan = "#58d1eb"
+green = "#98e024"
+magenta = "#f4005f"
+red = "#f4005f"
+white = "#c4c5b5"
+yellow = "#fa8419"
+
+[colors.primary]
+background = "#1a1a1a"
+foreground = "#c4c5b5"
+
+[colors.selection]
+background = "#18354f"
+text = "#b5b5b5"
+
+[font]
+size = 10.0
+
+[font.normal]
+{{ if has "ttf-liberation-mono-nerd" .packages -}}
+family = "LiterationMono Nerd Font Mono"
+{{- else if has "ttf-liberation" .packages -}}
+family = "Liberation Mono"
+{{- end }}
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F11"
+
+[window]
+decorations = "none"
+
+[window.dimensions]
+columns = 180
+lines = 64

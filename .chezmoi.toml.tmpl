@@ -1,10 +1,6 @@
 [diff]
 pager = "less -R"
 
-[data.alacritty]
-# Can be one of ayu-dark, ayu-mirage, snazzy, pencil-dark, pencil-light, monokai-soda, monokai-pro, kitty, hyper, dracula, darkside or cobalt2
-colorscheme = "{{ dig "alacritty" "colorscheme" "monokai-soda" . }}"
-
 [data]
 name = "{{ dig "data" "name" "Markus Schanz" . }}"
 email = "{{ promptStringOnce . "email" "Provide an email for the global git config user.email setting" }}"
