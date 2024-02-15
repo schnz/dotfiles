@@ -32,6 +32,7 @@ packages = [
 
   # CLI tools
   {{ if kindIs "map" (stat "/usr/bin/htop") -}}"htop",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/jq") -}}"jq",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/kubectl") -}}"kubectl",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/paru") -}}"paru",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/tmux") -}}"tmux",{{ end }}
@@ -45,9 +46,11 @@ packages = [
 
   # Multimedia
   {{ if kindIs "map" (stat "/usr/bin/mpv") -}}"mpv",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/rec") -}}"sox",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/spotifyd") -}}"spotifyd",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/streamlink") -}}"streamlink",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/weechat") -}}"weechat",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/wl-paste") -}}"wl-clipboard",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/osd_cat") -}}"xosd",{{ end }}
 
   # Misc

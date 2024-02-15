@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# This script requires a retrievable OpenAI API key.
+# To store the secret use the following command:
+# secret-tool store --label="OpenAI API Key" application cli service openai
+#
+set -euo pipefail
+
+FORMAT="mp3"    # One of mp3, opus, aac, and flac
+VOICE="shimmer" # One of alloy, echo, fable, onyx, nova, and shimmer
+
+clipboard="$(wl-paste --primary --type text)"
+ftype="$(echo "$clipboard" | file -b --mime-type -)"
+
+if [ "$ftype" != "text/plain" ]; then
+	notify-send -e "Invalid clipboard content" "Expected: \"text/plain\". Got: \"$ftype\"."
+	exit 1
+fi
+
+if [ "${#clipboard}" -gt 4096 ]; then
+	notify-send -e "Text too long" "Text must not exceed 4096 characters. Got: ${#clipboard} characters."
+	exit 1
+fi
+
+apikey=$(secret-tool lookup application cli service openai)
+escaped=$(echo -n "$clipboard" | jq -Rs .)
+
+curl https://api.openai.com/v1/audio/speech \
+    -H "Authorization: Bearer $apikey" \
+    -H "Content-Type: application/json" \
+    -d "{
+      \"model\": \"tts-1\",
+      \"voice\": \"${VOICE}\",
+      \"response_format\": \"${FORMAT}\",
+      \"input\": ${escaped}
+    }" \
+    --silent | mpv --no-config --no-terminal -

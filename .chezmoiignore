@@ -85,3 +85,10 @@ README.md
 .local/bin/weechat-follow-osd
 {{- end }}
 {{- end }}
+
+{{ if not (and (has "wl-clipboard" .packages) (has "sox" .packages)) -}}
+.local/bin/clipstt
+{{- end }}
+{{ if not (and (has "wl-clipboard" .packages) (has "mpv" .packages) (has "jq" .packages)) -}}
+.local/bin/cliptts
+{{- end }}

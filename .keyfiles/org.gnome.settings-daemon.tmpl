@@ -1,17 +1,47 @@
+{{ $keybindings := list }}
+
+{{- if or (has "alacritty" .packages) (has "gnome-console" .packages) }}
+{{- $cmd := ternary "alacritty" "kgx" (has "alacritty" .packages) -}}
+{{- $keybindings = append $keybindings (dict
+    "binding" "<Super>t"
+    "command" $cmd
+    "name" "Terminal")
+-}}
+{{ end -}}
+
+{{- if has "wl-clipboard" .packages }}
+{{- if and (has "mpv" .packages) (has "jq" .packages) }}
+{{- $keybindings = append $keybindings (dict
+    "binding" "<Control><Super>p"
+    "command" "cliptts"
+    "name" "Text to Speech")
+-}}
+{{ end -}}
+
+{{- if has "sox" .packages }}
+{{- $keybindings = append $keybindings (dict
+    "binding" "<Control><Super>r"
+    "command" "clipstt"
+    "name" "Speech to Text")
+-}}
+{{ end -}}
+{{ end -}}
+
 [org/gnome/settings-daemon/plugins/media-keys]
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+custom-keybindings=[
+    {{- range $i, $_ := $keybindings -}}
+    '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ $i }}/'
+    {{- if ne (add1 $i) (len $keybindings) }}, {{ end -}}
+    {{ end -}}
+]
 home=['<Super>e']
 
-{{ if or (has "alacritty" .packages) (has "gnome-console" .packages) -}}
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
-binding='<Super>t'
-{{ if has "alacritty" .packages -}}
-command='alacritty'
-{{- else -}}
-command='kgx'
-{{- end }}
-name='Terminal'
-{{- end }}
+{{ range $i, $keybinding := $keybindings -}}
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom{{ $i }}]
+{{ range $k, $v := $keybinding -}}
+{{ $k }}='{{ $v }}'
+{{ end }}
+{{ end -}}
 
 [org/gnome/settings-daemon/plugins/power]
 ambient-enabled=false
