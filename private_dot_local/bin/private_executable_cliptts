@@ -8,6 +8,14 @@ set -euo pipefail
 
 FORMAT="mp3"    # One of mp3, opus, aac, and flac
 VOICE="shimmer" # One of alloy, echo, fable, onyx, nova, and shimmer
+IPC_SOCKET="/tmp/cliptts-mpv-ipc.socket"
+
+# Stop mpv when it is still running from a previous invocation
+if socat -u OPEN:/dev/null UNIX-CONNECT:${IPC_SOCKET} &> /dev/null; then
+	notify-send -e "Abort playback"
+	echo '{ "command": ["quit", 0] }' | socat - "${IPC_SOCKET}" &> /dev/null
+	exit
+fi
 
 clipboard="$(wl-paste --primary --type text)"
 ftype="$(echo "$clipboard" | file -b --mime-type -)"
@@ -34,4 +42,4 @@ curl https://api.openai.com/v1/audio/speech \
       \"response_format\": \"${FORMAT}\",
       \"input\": ${escaped}
     }" \
-    --silent | mpv --no-config --no-terminal -
+    --silent | mpv --no-config --no-audio-display --no-terminal --input-ipc-server=${IPC_SOCKET} -

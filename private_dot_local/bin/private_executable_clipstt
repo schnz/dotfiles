@@ -8,6 +8,12 @@ set -euo pipefail
 
 apikey=$(secret-tool lookup application cli service openai)
 
+is_recording() {
+	# use command substitution to continue script exectuion when exit code != 0
+	local pid=$(pgrep -x "rec")
+	echo $pid
+}
+
 record_and_transcribe() {
 	local tmpfile=$(mktemp --suffix .ogg)
 
@@ -23,6 +29,14 @@ record_and_transcribe() {
 	    -F response_format="text" \
 	    --silent | wl-copy --type text/plain
 }
+
+process=$(is_recording)
+
+if [ -n "${process}" ]; then
+	notify-send -e "Interrupt" "Stop recording due to user interrupt."
+	kill $process
+	exit
+fi
 
 notify-send -e "Recording started" "Voice recording has started."
 record_and_transcribe
