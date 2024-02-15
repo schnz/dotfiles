@@ -4,7 +4,7 @@ set -euo pipefail
 
 BASENAME=$(basename "$0")
 EXTENSIONS=(
-	"EditorConfig.EditorConfig" # EditorConfig for VS Code
+	"editorconfig.editorconfig" # EditorConfig for VS Code
 	"dbaeumer.vscode-eslint"    # ESLint
 	"golang.go"                 # Go
 	"esbenp.prettier-vscode"    # Prettier - Code formatter
