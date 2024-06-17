@@ -30,7 +30,7 @@
   "explorer.decorations.colors": false,
   "window.menuBarVisibility": "toggle",
   "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${profileName}${separator}${appName}",
-  "workbench.activityBar.location": "side",
+  "workbench.activityBar.location": "default",
   "workbench.layoutControl.enabled": true,
   "workbench.statusBar.visible": true,
   /**
@@ -70,6 +70,7 @@
   /**
    * Other user settings
    */
+  "debug.focusWindowOnBreak": false,
   "explorer.confirmDelete": false,
   "files.enableTrash": false,
   "files.autoSave": "off",
