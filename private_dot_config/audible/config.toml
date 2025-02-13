@@ -1,0 +1,8 @@
+title = "Audible Config File"
+
+[APP]
+primary_profile = "audible"
+
+[profile.audible]
+auth_file = "audible.json"
+country_code = "de"

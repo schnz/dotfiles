@@ -1,0 +1,71 @@
+version: "1"
+
+global:
+  # skip implicit initialization of a repository if none exist at location
+  #initialize: false
+
+groups:
+  all:
+    - default
+    - relatives
+    - friends
+    - misc
+
+base:
+  repository: "sftp:u445641@u445641.your-storagebox.de:/restic/markus"
+  password-file: "password" # file that holds repository password
+  backup:
+    #no-error-on-warning: true
+    skip-if-unchanged: true
+    schedule: "*-*-* *:00:00" # hourly
+    schedule-permission: user
+  retention:
+    before-backup: false
+    after-backup: true
+    keep-hourly: 5
+    keep-daily: 7
+    keep-weekly: 4
+    keep-monthly: 12
+    keep-yearly: 3
+    prune: true # prune files from repository that are no longer referenced by any snapshot
+    host: true  # only forget snapshots produced by this host
+    tag: true   # only forget snapshots with tags specified in the backup section
+
+default:
+  inherit: base
+  backup:
+    source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source:
+      - personal
+    tag:
+      - private
+
+relatives:
+  inherit: base
+  backup:
+    source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source:
+      - relatives
+    tag:
+      - family
+
+friends:
+  inherit: base
+  backup:
+    source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source:
+      - friends
+    tag:
+      - thirdparty
+
+misc:
+  inherit: base
+  backup:
+    source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source:
+      - internet
+      - music
+      - todo
+      - virtualmachines
+    tag:
+      - misc

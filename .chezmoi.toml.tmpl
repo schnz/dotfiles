@@ -1,3 +1,10 @@
+{{ $passphrase := promptStringOnce . "passphrase" "Provide the passphrase to decrypt encrypted files (and to encrypt new files)" -}}
+encryption = "gpg"
+
+[gpg]
+args = ["--quiet", "--batch", "--passphrase", {{ $passphrase | quote }}, "--no-symkey-cache"]
+symmetric = true
+
 [diff]
 pager = "less -R"
 
@@ -5,6 +12,7 @@ pager = "less -R"
 name = "{{ dig "data" "name" "Markus Schanz" . }}"
 email = "{{ promptStringOnce . "email" "Provide an email for the global git config user.email setting" }}"
 use_nvm = {{ promptBoolOnce . "use_nvm" "Setup Node Version Manager (nvm)?" true }}
+passphrase = {{ $passphrase | quote }}
 
 # Execute this command to print a re-generated config with an up-to-date package list.
 # cat "$(chezmoi source-path)/.chezmoi.toml.tmpl" | chezmoi execute-template --init
@@ -56,7 +64,8 @@ packages = [
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/yt-dlp") -}}"yt-dlp",{{ end }}
 
   # Misc
-  {{ if kindIs "map" (stat "/usr/bin/chromium") -}}"chromium",
+  {{ if kindIs "map" (stat "/usr/bin/aws") -}}"aws-cli",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/chromium") -}}"chromium",
   {{ end }}{{ if kindIs "map" (stat "/opt/google/earth/pro/googleearth") -}}"google-earth-pro",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/firefox") -}}"firefox",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/sensors") -}}"lm_sensors",

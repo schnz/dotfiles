@@ -1,0 +1,56 @@
+[plugins]
+endpoint = awscli_plugin_endpoint
+
+[default]
+region = eu-central-1
+output = json
+
+[profile playground]
+region = eu-central-1
+output = json
+
+[profile root]
+region = eu-central-1
+output = json
+
+[profile cloudflare]
+region = auto
+output = json
+s3 =
+  endpoint_url = https://0579878ef764688719084a9cf7386df7.r2.cloudflarestorage.com
+  #signature_version = s3v4
+  #max_concurrent_requests = 100
+  #max_queue_size = 1000
+  #multipart_threshold = 50MB
+  #multipart_chunksize = 10MB
+  addressing_style = auto
+s3api =
+  endpoint_url = https://0579878ef764688719084a9cf7386df7.r2.cloudflarestorage.com
+
+[profile scaleway-fr]
+region = fr-par
+output = json
+s3 =
+  endpoint_url = https://s3.fr-par.scw.cloud
+  signature_version = s3v4
+  max_concurrent_requests = 100
+  max_queue_size = 1000
+  multipart_threshold = 50MB
+  multipart_chunksize = 10MB
+  addressing_style = auto
+s3api =
+  endpoint_url = https://s3.fr-par.scw.cloud
+
+[profile scaleway-nl]
+region = nl-ams
+output = json
+s3 =
+  endpoint_url = https://s3.nl-ams.scw.cloud
+  signature_version = s3v4
+  max_concurrent_requests = 100
+  max_queue_size = 1000
+  multipart_threshold = 50MB
+  multipart_chunksize = 10MB
+  addressing_style = auto
+s3api =
+  endpoint_url = https://s3.nl-ams.scw.cloud

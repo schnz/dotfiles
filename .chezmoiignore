@@ -3,6 +3,10 @@ dynamic/
 dconf_overrides.keyfile
 README.md
 
+# Comment out on-demand
+.config/audible/
+.config/Yubico/
+
 # Keep bash-related skeleton files in non-zsh environments.
 # Likewise, don't create .zshenv
 {{ if not (has "zsh" .packages) -}}
@@ -30,6 +34,10 @@ README.md
 .local/share/applications/Alacritty.desktop
 {{- end }}
 
+{{ if not (has "aws-cli" .packages) -}}
+.config/aws/
+{{- end }}
+
 {{ if not (has "chromium" .packages) -}}
 .local/share/applications/chromium.desktop
 {{- end }}
@@ -54,6 +62,10 @@ README.md
 
 {{ if not (has "paru" .packages) -}}
 .config/paru/
+{{- end }}
+
+{{ if not (has "resticprofile" .packages) -}}
+.config/resticprofile/
 {{- end }}
 
 {{ if not (has "spotifyd" .packages) -}}
@@ -87,6 +99,8 @@ README.md
 {{- end }}
 
 {{ if not (and (has "ffmpeg" .packages) (has "jq" .packages)) -}}
+.config/audible/audible.json
+.config/audible/config.toml
 .local/bin/audible-convert-aaxc
 {{- end }}
 
