@@ -45,7 +45,8 @@ packages = [
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/code") -}}"visual-studio-code-bin",{{ end }}
 
   # Multimedia
-  {{ if kindIs "map" (stat "/usr/bin/mpv") -}}"mpv",
+  {{ if kindIs "map" (stat "/usr/bin/ffmpeg") -}}"ffmpeg",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/mpv") -}}"mpv",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/rec") -}}"sox",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/spotifyd") -}}"spotifyd",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/streamlink") -}}"streamlink",
@@ -60,6 +61,7 @@ packages = [
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/firefox") -}}"firefox",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/sensors") -}}"lm_sensors",
   {{ end }}{{ if kindIs "map" (stat (print .chezmoi.homeDir "/.local/bin/ntfy")) -}}"ntfy",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/rclone") -}}"rclone",
   {{ end }}{{ if kindIs "map" (stat (print .chezmoi.homeDir "/go/bin/resticprofile")) -}}"resticprofile",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/thunderbird") -}}"thunderbird",{{ end }}
 ]
@@ -96,3 +98,11 @@ username = "{{ dig "credentials" "spotify" "username" "Coksnuss" . }}"
 [data.credentials.ntfy]
 hostname = "{{ dig "credentials" "ntfy" "hostname" "https://ntfy.schanz.id" . }}"
 {{ end -}}
+
+{{- if kindIs "map" (stat "/usr/bin/rclone") }}
+# secret-tool store --label="Cloudflare R2 (Access Key)" application rust-keyring service r2 username "{{ dig "credentials" "r2" "bucketid" "REDACTED" . }}"
+# secret-tool store --label="Cloudflare R2 (Secret)" application rust-keyring service r2 username "{{ dig "credentials" "r2" "bucketid" "REDACTED" . }}_secret"
+[data.credentials.r2]
+bucketid = "{{ dig "credentials" "r2" "bucketid" "REDACTED" . }}"
+{{ end -}}
+

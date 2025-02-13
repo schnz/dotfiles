@@ -1,0 +1,3 @@
+#!/bin/sh
+
+find . -maxdepth 1 -name "*.aaxc" -exec sh -c 'ffmpeg -audible_key $(jq -r ".content_license.license_response.key" $(basename "{}" .aaxc).voucher) -audible_iv $(jq -r ".content_license.license_response.iv" $(basename "{}" .aaxc).voucher) -i "{}" -c copy $(basename "{}" .aaxc).mp4' \;

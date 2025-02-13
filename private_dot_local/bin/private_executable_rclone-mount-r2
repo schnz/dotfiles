@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "usage $BASENAME <mountpoint>"
+
+	exit 0
+fi
+
+exec rclone mount R2:/public "$1" --vfs-read-chunk-streams 16 --vfs-read-chunk-size 4M

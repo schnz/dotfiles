@@ -86,12 +86,18 @@ README.md
 {{- end }}
 {{- end }}
 
+{{ if not (and (has "ffmpeg" .packages) (has "jq" .packages)) -}}
+.local/bin/audible-convert-aaxc
+{{- end }}
+
 {{ if not (and (has "wl-clipboard" .packages) (has "sox" .packages)) -}}
 .local/bin/clipstt
 {{- end }}
+
 {{ if not (and (has "wl-clipboard" .packages) (has "mpv" .packages) (has "jq" .packages)) -}}
 .local/bin/cliptts
 {{- end }}
+
 {{ if not (has "jq" .packages) -}}
 .local/bin/nobs
 .local/bin/ocr
@@ -100,6 +106,11 @@ README.md
 
 {{ if not (has "ntfy" .packages) -}}
 .config/ntfy/client.yml
+{{- end }}
+
+{{ if not (has "rclone" .packages) -}}
+.config/rclone/rclone.conf
+.local/bin/rclone-mount-r2
 {{- end }}
 
 {{ if not (and (has "jq" .packages) (has "yt-dlp" .packages)) -}}

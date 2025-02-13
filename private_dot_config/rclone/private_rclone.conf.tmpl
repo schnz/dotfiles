@@ -1,0 +1,11 @@
+[R2]
+type = s3
+provider = Cloudflare
+access_key_id = {{ keyring "r2" .credentials.r2.bucketid }}
+secret_access_key = {{ keyring "r2" (print .credentials.r2.bucketid "_secret") }}
+endpoint = https://{{ .credentials.r2.bucketid }}.r2.cloudflarestorage.com
+
+[dl.schanz.id]
+type = alias
+remote = R2:/public
+
