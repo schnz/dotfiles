@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -euo pipefail
+
+apikey=$(secret-tool lookup application cli service openai)
+model=gpt-4o
+
+nobs() {
+    curl https://api.openai.com/v1/chat/completions \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $apikey" \
+        -d "{
+          \"model\": \"${model}\",
+          \"messages\": [
+            {
+              \"role\": \"system\",
+              \"content\": \"You are a helpful assistant with a \\\"cut the crap\\\" mentality who analyzes press-statements provided by the user. You give a no-bullshit summary of the statement by anylizing and dephrasing the usually euphemistically formulated information. Usually companies try to paint their business decisions as benifitial for the end-users, albeit most times they simply aim to increase their profit or otherwise benefit the company. Yet, users are forced to adapt and are worse-dispositioned because, e.g., they have to adapt to a subscribtion model instead of a one-time payment model. Be concise but don't miss out on the key points of the text.\"
+            },
+            {
+              \"role\": \"user\",
+              \"content\": $(echo -n "$1" | jq -Rs .)
+            }
+          ]
+        }" \
+        --silent | jq -r ".choices[0].message.content"
+}
+
+
+nobs "$(cat -)"

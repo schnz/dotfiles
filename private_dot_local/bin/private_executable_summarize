@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -euo pipefail
+
+apikey=$(secret-tool lookup application cli service openai)
+model=gpt-4o-mini
+
+summarize() {
+    curl https://api.openai.com/v1/chat/completions \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer $apikey" \
+        -d "{
+          \"model\": \"${model}\",
+          \"messages\": [
+            {
+              \"role\": \"system\",
+              \"content\": \"You are a helpful assistant who summarizes the given text of the user. Be concise but don't miss out on the key points of the text.\"
+            },
+            {
+              \"role\": \"user\",
+              \"content\": $(echo -n "$1" | jq -Rs .)
+            }
+          ]
+        }" \
+        --silent | jq -r ".choices[0].message.content"
+}
+
+summarize "$(cat -)"

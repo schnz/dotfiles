@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+	echo "usage: $BASENAME <youtube-url> <sub-lang>"
+	echo
+	echo "sub-lang can be any valid value from yt-dlp --list-subs, e.g., en-orig, en, de, ..."
+
+	exit 0
+fi
+
+transcribe() {
+	local tmp_dir=$(mktemp -d)
+
+	trap "rm -rf -- '${tmp_dir}'" EXIT
+
+	yt-dlp -q --skip-download --write-subs --write-auto-subs --sub-langs "$2" --sub-format json3 "$1" -o "$tmp_dir/subtitle"
+
+	jq -r '[.events[].segs] | flatten(1) | map(select(. != null)) | map(.utf8) | join("")' "$tmp_dir/subtitle.$2.json3"
+}
+
+if [ $# -eq 1 ]; then
+	yt-dlp -q --list-subs "$1"
+
+	exit 0
+fi
+
+transcription=$(transcribe "$1" "$2")
+echo "$transcription" | tr "[:cntrl:]" " "

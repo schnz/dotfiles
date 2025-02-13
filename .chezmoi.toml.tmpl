@@ -51,7 +51,8 @@ packages = [
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/streamlink") -}}"streamlink",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/weechat") -}}"weechat",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/wl-paste") -}}"wl-clipboard",
-  {{ end }}{{ if kindIs "map" (stat "/usr/bin/osd_cat") -}}"xosd",{{ end }}
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/osd_cat") -}}"xosd",
+  {{ end }}{{ if kindIs "map" (stat "/usr/bin/yt-dlp") -}}"yt-dlp",{{ end }}
 
   # Misc
   {{ if kindIs "map" (stat "/usr/bin/chromium") -}}"chromium",

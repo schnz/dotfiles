@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# This script requires a retrievable OpenAI API key.
+# To store the secret use the following command:
+# secret-tool store --label="OpenAI API Key" application cli service openai
+#
+set -euo pipefail
+
+apikey=$(secret-tool lookup application cli service openai)
+encoded=$(base64 -w0 "$1")
+mimetype=$(file --mime-type -b "$1")
+
+echo "data:${mimetype};base64,${encoded}" |
+jq \
+  --raw-input \
+  --compact-output \
+  '{
+    "model": "gpt-4o-mini",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Convert the attached screenshot to markdown. Return only the markdown with no explanation text. Do not exclude any content from the page."
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "image_url",
+            "image_url": { "url": . }
+          }
+        ]
+      }
+    ]
+  }' |
+curl https://api.openai.com/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ${apikey}" \
+  -s \
+  -d @- |
+jq -r ".choices[].message.content"

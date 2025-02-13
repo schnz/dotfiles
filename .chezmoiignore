@@ -92,3 +92,11 @@ README.md
 {{ if not (and (has "wl-clipboard" .packages) (has "mpv" .packages) (has "jq" .packages)) -}}
 .local/bin/cliptts
 {{- end }}
+{{ if not (has "jq" .packages) -}}
+.local/bin/nobs
+.local/bin/ocr
+.local/bin/summarize
+{{- end }}
+{{ if not (and (has "jq" .packages) (has "yt-dlp" .packages)) -}}
+.local/bin/transcribe
+{{- end }}
