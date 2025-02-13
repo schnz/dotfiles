@@ -96,5 +96,14 @@
     "'([^']*)':",
     "(\\S+):"
   ],
-  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "class:list"]
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "ngClass",
+    "class:list"
+  ],
+  "amazonQ.telemetry": false,
+  "amazonQ.shareContentWithAWS": false,
+  "prisma.showPrismaDataPlatformNotification": false,
+  "aws.samcli.enableCodeLenses": false
 }

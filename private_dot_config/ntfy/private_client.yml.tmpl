@@ -1,0 +1,2 @@
+default-host: {{ .credentials.ntfy.hostname }}
+default-token: {{ keyring "ntfy" .credentials.ntfy.hostname }}

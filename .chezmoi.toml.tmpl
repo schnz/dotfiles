@@ -59,6 +59,8 @@ packages = [
   {{ end }}{{ if kindIs "map" (stat "/opt/google/earth/pro/googleearth") -}}"google-earth-pro",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/firefox") -}}"firefox",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/sensors") -}}"lm_sensors",
+  {{ end }}{{ if kindIs "map" (stat (print .chezmoi.homeDir "/.local/bin/ntfy")) -}}"ntfy",
+  {{ end }}{{ if kindIs "map" (stat (print .chezmoi.homeDir "/go/bin/resticprofile")) -}}"resticprofile",
   {{ end }}{{ if kindIs "map" (stat "/usr/bin/thunderbird") -}}"thunderbird",{{ end }}
 ]
 
@@ -87,4 +89,10 @@ username = "{{ dig "credentials" "libera" "username" "Superhansel" . }}"
 # secret-tool store --label="Spotifyd" application rust-keyring service spotifyd username "{{ dig "credentials" "spotify" "username" "Coksnuss" . }}"
 [data.credentials.spotify]
 username = "{{ dig "credentials" "spotify" "username" "Coksnuss" . }}"
+{{ end -}}
+
+{{- if kindIs "map" (stat (print .chezmoi.homeDir "/.local/bin/ntfy")) }}
+# secret-tool store --label="ntfy" application rust-keyring service ntfy username "{{ dig "credentials" "ntfy" "hostname" "https://ntfy.schanz.id" . }}"
+[data.credentials.ntfy]
+hostname = "{{ dig "credentials" "ntfy" "hostname" "https://ntfy.schanz.id" . }}"
 {{ end -}}

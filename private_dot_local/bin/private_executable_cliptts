@@ -6,8 +6,8 @@
 #
 set -euo pipefail
 
-FORMAT="mp3"    # One of mp3, opus, aac, and flac
-VOICE="shimmer" # One of alloy, echo, fable, onyx, nova, and shimmer
+FORMAT="mp3" # One of mp3, opus, aac, and flac
+VOICE="onyx" # One of alloy, echo, fable, onyx, nova, and shimmer
 IPC_SOCKET="/tmp/cliptts-mpv-ipc.socket"
 
 # Stop mpv when it is still running from a previous invocation
@@ -40,6 +40,7 @@ curl https://api.openai.com/v1/audio/speech \
       \"model\": \"tts-1\",
       \"voice\": \"${VOICE}\",
       \"response_format\": \"${FORMAT}\",
+      \"speed\": 1.25,
       \"input\": ${escaped}
     }" \
     --silent | mpv --no-config --no-audio-display --no-terminal --input-ipc-server=${IPC_SOCKET} -

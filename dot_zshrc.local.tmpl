@@ -35,7 +35,15 @@ if [ -d "$HOME/.local/share/nvm" ]; then
 fi
 {{- end }}
 
+{{ if has "resticprofile" .packages -}}
+# resticprofile autocompletion
+if [ -x "$HOME/go/bin/resticprofile" ]; then
+    eval "$($HOME/go/bin/resticprofile generate --zsh-completion)"
+fi
+{{- end }}
+
 # Exports exclusively for interactive shells (hence no need to reside in .zshenv)
+export AUDIBLE_CONFIG_DIR=~/.config/audible
 export GPG_TTY=$(tty)
 
 {{ if has "grml-zsh-config" .packages -}}

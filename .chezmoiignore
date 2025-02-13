@@ -97,6 +97,11 @@ README.md
 .local/bin/ocr
 .local/bin/summarize
 {{- end }}
+
+{{ if not (has "ntfy" .packages) -}}
+.config/ntfy/client.yml
+{{- end }}
+
 {{ if not (and (has "jq" .packages) (has "yt-dlp" .packages)) -}}
 .local/bin/transcribe
 {{- end }}
