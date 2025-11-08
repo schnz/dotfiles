@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 1 ]; then
-	echo "usage $BASENAME <mountpoint>"
+	echo "USAGE: $(basename "$0") <mountpoint>"
 
 	exit 0
 fi

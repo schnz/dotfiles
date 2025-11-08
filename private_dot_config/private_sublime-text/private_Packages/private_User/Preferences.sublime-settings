@@ -41,4 +41,5 @@
 	"trim_trailing_white_space_on_save": true,
 	"ui_separator": true,
 	"update_check": true,
+	"index_files": true,
 }

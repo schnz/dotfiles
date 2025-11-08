@@ -1,8 +1,9 @@
 {{ if has "gedit" .packages -}}
-[org/gnome/gedit/preferences]
-display-line-numbers=false
+[org/gnome/gedit/preferences/editor]
+display-line-numbers=true
 highlight-current-line=false
 insert-spaces=true
+scheme='tango'
 tabs-size=uint32 4
 wrap-last-split-mode='word'
 {{- end }}

@@ -24,6 +24,10 @@ if [ -z "$EDITOR" ] && [ -f "/usr/bin/vim" ] ; then
 fi
 {{- end }}
 
+# if [ -z "$LESS" ] ; then
+#     export LESS="-j4"
+# fi
+
 if [ -z "$DOTNET_CLI_TELEMETRY_OPTOUT" ] ; then
     export DOTNET_CLI_TELEMETRY_OPTOUT=1
 fi
@@ -38,6 +42,7 @@ export AZURE_CONFIG_DIR=~/.config/azure
 {{- /* As long as cargo is only ever used as a make dependency to build packages this still seems like the best place */}}
 export CARGO_HOME=~/.cache/cargo
 export CHROME_USER_DATA_DIR=~/.local/share/chromium
+export CLAUDE_CONFIG_DIR=~/.config/claude
 export KUBECONFIG=~/.config/kube/config
 export OCI_CLI_CONFIG_FILE=~/.config/oci/config
 export OCI_CLI_KEY_FILE=~/.config/oci/oci_api_key.pem

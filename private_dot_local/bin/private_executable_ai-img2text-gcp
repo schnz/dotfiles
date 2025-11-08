@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
+if ! [[ -v GCP_API_KEY ]]; then
+	echo "GCP_API_KEY environment variable is not set"
+	exit 1
+fi
+
+encoded=$(base64 -w0 "$1")
+mimetype=$(file --mime-type -b "$1")
+
+
+#echo "data:${mimetype};base64,${encoded}" |
+echo "${encoded}" |
+jq \
+  --raw-input \
+  --compact-output \
+  '{
+    "requests": [
+      {
+        "features": [{ "type": "DOCUMENT_TEXT_DETECTION", "model": "builtin/weekly" }],
+        "imageContext": { "languageHints": ["de"] },
+        "image": {
+          "content": .
+        }
+      }
+    ]
+  }' |
+curl https://vision.googleapis.com/v1/images:annotate \
+  -H "Authorization: Bearer ${GCP_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -s \
+  -d @- |
+jq -r ".responses[].fullTextAnnotation.text"

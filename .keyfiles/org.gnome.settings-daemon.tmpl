@@ -13,7 +13,7 @@
 {{- if and (has "mpv" .packages) (has "jq" .packages) }}
 {{- $keybindings = append $keybindings (dict
     "binding" "<Control><Super>p"
-    "command" "cliptts"
+    "command" "ai-cliptts"
     "name" "Text to Speech")
 -}}
 {{ end -}}
@@ -21,7 +21,7 @@
 {{- if has "sox" .packages }}
 {{- $keybindings = append $keybindings (dict
     "binding" "<Control><Super>r"
-    "command" "clipstt"
+    "command" "ai-clipstt"
     "name" "Speech to Text")
 -}}
 {{ end -}}

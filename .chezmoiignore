@@ -2,6 +2,7 @@
 dynamic/
 dconf_overrides.keyfile
 README.md
+secrets.ejson
 
 # Comment out on-demand
 .config/audible/
@@ -57,7 +58,7 @@ README.md
 {{- end }}
 
 {{ if not (has "neovim" .packages) -}}
-.config/nivm/
+.config/nvim/
 {{- end }}
 
 {{ if not (has "paru" .packages) -}}
@@ -66,10 +67,6 @@ README.md
 
 {{ if not (has "resticprofile" .packages) -}}
 .config/resticprofile/
-{{- end }}
-
-{{ if not (has "spotifyd" .packages) -}}
-.config/spotifyd/
 {{- end }}
 
 {{ if not (has "streamlink" .packages) -}}

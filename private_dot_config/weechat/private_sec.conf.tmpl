@@ -17,5 +17,5 @@ salt = on
 
 [data]
 __passphrase__ = off
-libera = "{{ keyring "libera" .credentials.libera.username }}"
-twitch = "{{ keyring "twitch" .credentials.twitch.username }}"
+libera = "{{ (ejsonDecryptWithKey (print .chezmoi.sourceDir "/secrets.ejson") .ejson_pkey)._weechat._libera.password }}"
+twitch = "{{ (ejsonDecryptWithKey (print .chezmoi.sourceDir "/secrets.ejson") .ejson_pkey)._weechat._twitch.token }}"

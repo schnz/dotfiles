@@ -1,14 +1,19 @@
 #!/bin/bash
-
 set -euo pipefail
 
-apikey=$(secret-tool lookup application cli service openai)
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
+if ! [[ -v OPENAI_API_KEY ]]; then
+	echo "OPENAI_API_KEY environment variable is not set"
+	exit 1
+fi
+
 model=gpt-4o-mini
 
 summarize() {
     curl https://api.openai.com/v1/chat/completions \
         -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $apikey" \
+        -H "Authorization: Bearer $OPENAI_API_KEY" \
         -d "{
           \"model\": \"${model}\",
           \"messages\": [

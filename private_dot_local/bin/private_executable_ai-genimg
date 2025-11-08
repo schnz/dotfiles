@@ -1,0 +1,74 @@
+#!/bin/bash
+set -euo pipefail
+
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
+QUALITY="medium"      # high, medium, low or auto (default)
+BACKGROUND="auto"     # transparent, opaque, or auto (default)
+NUM="1"               # number of images to generate (1-10)
+IMAGE_FORMAT="jpeg"   # one of png (default), jpeg, or webp
+ASPECT_RATIO="square" # square, portrait, landscape
+
+if [ "$#" != 1 ]; then
+    echo "usage: $(basename "$0") <image prompt>"
+    exit 0
+fi
+
+if ! [[ -v OPENAI_API_KEY ]]; then
+	echo "OPENAI_API_KEY environment variable is not set"
+	exit 1
+fi
+
+RES="1024x1024"
+if [ "${ASPECT_RATIO}" = "portrait" ]; then
+    RES="1024x1536"
+elif [ "${ASPECT_RATIO}" = "landscape" ]; then
+    RES="1536x1024"
+fi
+
+escaped=$(echo -n "$1" | jq -Rs .)
+
+build_payload() {
+# output_compression: 100 (already the default)
+cat << EOF
+{
+  "model": "gpt-image-1",
+  "prompt": ${escaped},
+  "background": "${BACKGROUND}",
+  "moderation": "low",
+  "n": ${NUM},
+  "output_format": "${IMAGE_FORMAT}",
+  "quality": "${QUALITY}",
+  "size": "${RES}"
+}
+EOF
+}
+
+send_request() {
+    curl https://api.openai.com/v1/images/generations \
+        -H "Authorization: Bearer $OPENAI_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d "$(build_payload)" \
+        --silent
+}
+
+response="$(send_request)"
+images=$(echo "$response" | jq -r ".data[].b64_json")
+
+i=0
+for line in $images
+do
+    echo -n "$line" | base64 -d > "output_${i}.${IMAGE_FORMAT}"
+    i=$((i+1))
+done
+
+PRICE_INPUT_TEXT=5
+PRICE_INPUT_IMAGE=10
+PRICE_OUTPUT_IMAGE=40
+
+TOKENS_IN_TEXT=$(echo "$response" | jq -r ".usage.input_tokens_details.text_tokens")
+TOKENS_IN_IMAGE=$(echo "$response" | jq -r ".usage.input_tokens_details.image_tokens")
+TOKENS_OUT=$(echo "$response" | jq -r ".usage.output_tokens")
+
+echo "scale=8; (1/1000000) * (${TOKENS_IN_TEXT}*${PRICE_INPUT_TEXT} + ${TOKENS_IN_IMAGE}*${PRICE_INPUT_IMAGE} + ${TOKENS_OUT}*${PRICE_OUTPUT_IMAGE})" | bc | awk '{printf "Incurred cost: $%.4f\n", $0}'
+

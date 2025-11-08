@@ -17,7 +17,7 @@ output = json
 region = auto
 output = json
 s3 =
-  endpoint_url = https://0579878ef764688719084a9cf7386df7.r2.cloudflarestorage.com
+  endpoint_url = https://{{ (include (print .chezmoi.sourceDir "/secrets.ejson") | fromJson)._s3._cloudflare._account_id }}.r2.cloudflarestorage.com
   #signature_version = s3v4
   #max_concurrent_requests = 100
   #max_queue_size = 1000
@@ -25,7 +25,7 @@ s3 =
   #multipart_chunksize = 10MB
   addressing_style = auto
 s3api =
-  endpoint_url = https://0579878ef764688719084a9cf7386df7.r2.cloudflarestorage.com
+  endpoint_url = https://{{ (include (print .chezmoi.sourceDir "/secrets.ejson") | fromJson)._s3._cloudflare._account_id }}.r2.cloudflarestorage.com
 
 [profile scaleway-fr]
 region = fr-par

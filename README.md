@@ -2,6 +2,9 @@
 
 This repository contains my highly opiniated and personalized dot files. They are managed with [chezmoi](https://www.chezmoi.io/).
 
+> [!NOTE]
+> The setup is optimized for Arch Linux distributions with a GNOME environment. This doesn't prevent selective usage of subset(s) of config files in other Linux distributions. But some configurations and/or package detection mechanisms simply won't work, e.g., proper zsh environment setup.
+
 ## Quickstart
 
 The TLDR of everything below.
@@ -65,7 +68,7 @@ This repository manages user-specific configuration files that reside in the hom
 
 In general, no implicit assumptions about system-wide installed packages are made. Instead, some of the config files in this repository are conditionally ignored and some are generated via [Go templates](https://pkg.go.dev/text/template). The usage of templates allows to conditionally apply config values when certain dependencies are met (e.g. when a certain font is installed). However, this approach implies that the user experience may suffer when missing certain packages. For minimal installations, consider to install at least the following Arch Linux packages.
 
-**Note:** To support a wide variety of Linux distributions, package detection is based on simple file checks which may or may not be accurate for all Linux distributions. File checks were performed with a Arch Linux distribution in mind but should mostly work for other distributions as well. The `~/.config/chezmoi/chezmoi.toml` config file contains a list of detected packages.
+**Note:** Package detection is based on simple file checks. The `~/.config/chezmoi/chezmoi.toml` config file contains a list of detected packages.
 
 ### Highly Recommended Packages
 
@@ -85,7 +88,6 @@ In general, no implicit assumptions about system-wide installed packages are mad
 
 ### Optional Packages
 
-- `spotifyd`
 - `tmux`
 - `zsh-completions`
 

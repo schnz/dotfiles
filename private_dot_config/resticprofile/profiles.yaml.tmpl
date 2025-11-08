@@ -5,7 +5,7 @@ global:
   #initialize: false
 
 groups:
-  all:
+  ssd:
     - default
     - relatives
     - friends
@@ -13,7 +13,7 @@ groups:
 
 base:
   repository: "sftp:u445641@u445641.your-storagebox.de:/restic/markus"
-  password-file: "password" # file that holds repository password
+  password-file: "~/.config/resticprofile/password" # file that holds repository password
   backup:
     #no-error-on-warning: true
     skip-if-unchanged: true
@@ -35,6 +35,7 @@ default:
   inherit: base
   backup:
     source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source-relative: true
     source:
       - personal
     tag:
@@ -44,6 +45,7 @@ relatives:
   inherit: base
   backup:
     source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source-relative: true
     source:
       - relatives
     tag:
@@ -53,6 +55,7 @@ friends:
   inherit: base
   backup:
     source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source-relative: true
     source:
       - friends
     tag:
@@ -62,6 +65,7 @@ misc:
   inherit: base
   backup:
     source-base: "/data/{{ .chezmoi.username }}/Downloads/data"
+    source-relative: true
     source:
       - internet
       - music
@@ -69,3 +73,13 @@ misc:
       - virtualmachines
     tag:
       - misc
+
+nextcloud:
+  inherit: base
+  backup:
+    source-base: "/data/{{ .chezmoi.username }}"
+    source-relative: true
+    source:
+      - Nextcloud
+    tag:
+      - nextcloud

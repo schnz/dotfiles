@@ -1,0 +1,2 @@
+GCP_API_KEY={{ (ejsonDecryptWithKey (print .chezmoi.sourceDir "/secrets.ejson") .ejson_pkey)._api.gcp }}
+OPENAI_API_KEY={{ (ejsonDecryptWithKey (print .chezmoi.sourceDir "/secrets.ejson") .ejson_pkey)._api.openai }}

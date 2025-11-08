@@ -1,8 +1,13 @@
 #!/bin/bash
-
 set -euo pipefail
 
-apikey=$(secret-tool lookup application cli service openai)
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
+if ! [[ -v OPENAI_API_KEY ]]; then
+	echo "OPENAI_API_KEY environment variable is not set"
+	exit 1
+fi
+
 model=gpt-4o
 
 nobs() {
@@ -24,6 +29,5 @@ nobs() {
         }" \
         --silent | jq -r ".choices[0].message.content"
 }
-
 
 nobs "$(cat -)"

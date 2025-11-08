@@ -1,2 +1,2 @@
-default-host: {{ .credentials.ntfy.hostname }}
-default-token: {{ keyring "ntfy" .credentials.ntfy.hostname }}
+default-host: {{ (include (print .chezmoi.sourceDir "/secrets.ejson") | fromJson)._ntfy._base_url }}
+default-token: {{ (ejsonDecryptWithKey (print .chezmoi.sourceDir "/secrets.ejson") .ejson_pkey)._ntfy.token }}

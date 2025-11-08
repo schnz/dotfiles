@@ -1,12 +1,13 @@
 #!/bin/bash
-#
-# This script requires a retrievable OpenAI API key.
-# To store the secret use the following command:
-# secret-tool store --label="OpenAI API Key" application cli service openai
-#
 set -euo pipefail
 
-apikey=$(secret-tool lookup application cli service openai)
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
+if ! [[ -v OPENAI_API_KEY ]]; then
+	echo "OPENAI_API_KEY environment variable is not set"
+	exit 1
+fi
+
 encoded=$(base64 -w0 "$1")
 mimetype=$(file --mime-type -b "$1")
 
@@ -19,7 +20,7 @@ jq \
     "messages": [
       {
         "role": "system",
-        "content": "Convert the attached screenshot to markdown. Return only the markdown with no explanation text. Do not exclude any content from the page."
+        "content": "Identify all text in the attached image and convert it to markdown. Return only the markdown with no explanation text. Do not omit any textual content from the image."
       },
       {
         "role": "user",

@@ -1,14 +1,27 @@
 #!/bin/bash
-#
-# This script requires a retrievable OpenAI API key.
-# To store the secret use the following command:
-# secret-tool store --label="OpenAI API Key" application cli service openai
-#
 set -euo pipefail
 
+[[ -f ~/.config/environment ]] && . ~/.config/environment
+
 FORMAT="mp3" # One of mp3, opus, aac, and flac
-VOICE="onyx" # One of alloy, echo, fable, onyx, nova, and shimmer
+MODEL="gpt-4o-mini-tts" # tts-1 or gpt-4o-mini-tts
+VOICE="echo" # One of alloy, ash, ballad, coral, echo, fable, nova, onyx, sage, shimmer
+INSTRUCTIONS=$(cat <<EOF | jq -Rs
+Voice: Clear, authoritative, and composed, projecting confidence and professionalism.
+
+Tone: Neutral and informative, maintaining a balance between formality and approachability.
+
+Punctuation: Structured with commas and pauses for clarity, ensuring information is digestible and well-paced.
+
+Delivery: Steady and measured, with slight emphasis on key figures and deadlines to highlight critical points.
+EOF
+)
 IPC_SOCKET="/tmp/cliptts-mpv-ipc.socket"
+
+if ! [[ -v OPENAI_API_KEY ]]; then
+	notify-send -e "OPENAI_API_KEY environment variable is not set"
+	exit 1
+fi
 
 # Stop mpv when it is still running from a previous invocation
 if socat -u OPEN:/dev/null UNIX-CONNECT:${IPC_SOCKET} &> /dev/null; then
@@ -30,17 +43,17 @@ if [ "${#clipboard}" -gt 4096 ]; then
 	exit 1
 fi
 
-apikey=$(secret-tool lookup application cli service openai)
 escaped=$(echo -n "$clipboard" | jq -Rs .)
 
 curl https://api.openai.com/v1/audio/speech \
-    -H "Authorization: Bearer $apikey" \
+    -H "Authorization: Bearer $OPENAI_API_KEY" \
     -H "Content-Type: application/json" \
     -d "{
-      \"model\": \"tts-1\",
+      \"model\": \"${MODEL}\",
       \"voice\": \"${VOICE}\",
       \"response_format\": \"${FORMAT}\",
-      \"speed\": 1.25,
+      \"instructions\": ${INSTRUCTIONS},
+      \"speed\": 1.125,
       \"input\": ${escaped}
     }" \
     --silent | mpv --no-config --no-audio-display --no-terminal --input-ipc-server=${IPC_SOCKET} -
